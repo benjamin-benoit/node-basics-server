@@ -77,7 +77,17 @@ export default class User extends Model {
 
         hooks: {
           async beforeValidate(userInstance) {
-            userInstance.password_digest = await userInstance.generateHash();
+            if (userInstance.isNewRecord) {
+              userInstance.password_digest = await userInstance.generateHash()
+            }
+          },
+          async beforeSave(userInstance) {
+            if (!userInstance.isNewRecord && userInstance.changed('password')) {
+              if (userInstance.password !== userInstance.password_confirmation) {
+                throw new Error(USER.PASSWORD.CONFIRMATION_MESSAGE)
+              }
+              userInstance.password_digest = await userInstance.generateHash()
+            }
           },
 
           async beforeSave(userInstance) {
@@ -108,7 +118,9 @@ export default class User extends Model {
   toJSON() {
     const values = Object.assign({}, this.get());
 
-    delete values.password_digest;
+    delete values.password_digest
+    delete values.password
+    delete values.password_confirmation
 
     return values;
   }
