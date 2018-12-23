@@ -29,11 +29,14 @@ api.post("/register", async (req, res) => {
 });
 
 api.post("/login", async (req, res) => {
+  console.log("login");
   passport.authenticate("local", { session: false }, (err, user) => {
     if (err) {
       res.status(400).json({
         error: { message: err }
       });
+        console.log(err);
+      return res.status(400);
     }
 
     const { uuid, nickname, email } = user;

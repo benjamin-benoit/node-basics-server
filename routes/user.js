@@ -36,10 +36,6 @@ api.delete('/:uuid', passport.authenticate("jwt", { session: false }), async (re
             .catch( err => {
               res.status(400).json({ error: err.original.detail })
     });
-
-    res.status(200).json({
-      message: "User successfully deleted"
-    })
   } catch (err) {
     res.status(400).json({ err })
   }
@@ -73,8 +69,10 @@ api.put('/:uuid', passport.authenticate("jwt", { session: false }), async (req, 
         password_confirmation: "password"
       }, { where : {uuid:req.params.uuid},
       returning: true, plain: true })
-
-      res.status(200).json
+              .then( response => {
+                res.status(200).json({msg: "User updated." }) })
+              .catch( err => {
+                res.status(400).json({ error: err.original.detail }) })
     } catch (err) {
       res.status(400).json({ err: err.message })
     }
