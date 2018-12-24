@@ -16,7 +16,7 @@ api.delete(
 
       await User.destroy({ where: { uuid: req.params.uuid } })
         .then(response => {
-          res.status(200).json({ msg: "User deleted successfully." });
+          res.status(200).json({ msg: "User successfully deleted." });
         })
         .catch(err => {
           res.status(400).json({ error: err.original.detail });
@@ -49,7 +49,7 @@ api.put(
         { where: { uuid: req.params.uuid }, returning: true, plain: true }
       )
         .then(response => {
-          res.status(200).json({ msg: "User updated." });
+          res.status(200).json({ msg: "User successfully updated." });
         })
         .catch(err => {
           res.status(400).json({ error: err.original.detail });
