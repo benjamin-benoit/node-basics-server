@@ -23,19 +23,16 @@ api.post("/register", async (req, res) => {
 
     res.status(201).json({ data: { user }, meta: { token } });
   } catch (err) {
-    console.log(err.message);
     res.json({ err: err.message });
   }
 });
 
 api.post("/login", async (req, res) => {
-  console.log("login");
   passport.authenticate("local", { session: false }, (err, user) => {
     if (err) {
       res.status(400).json({
         error: { message: err }
       });
-        console.log(err);
       return res.status(400);
     }
 
